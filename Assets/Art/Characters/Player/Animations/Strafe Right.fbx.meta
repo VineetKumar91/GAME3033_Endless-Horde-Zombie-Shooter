@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: d168597cf45d7f948b9547b91bb01f16
+guid: 601026e0daf015b46b2bd41372701906
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable:
   - first:
       74: -203655887218126122
-    second: WalkingBackwards
+    second: Strafe Right
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -35,13 +35,13 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: WalkingBackwards
+      name: Strafe Right
       takeName: mixamo.com
       internalID: 0
       firstFrame: 0
-      lastFrame: 42
+      lastFrame: 43
       wrapMode: 0
-      orientationOffsetY: -39
+      orientationOffsetY: -50
       level: 0
       cycleOffset: 0
       loop: 0

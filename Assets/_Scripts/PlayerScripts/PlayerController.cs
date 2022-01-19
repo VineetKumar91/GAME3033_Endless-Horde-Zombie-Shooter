@@ -1,3 +1,12 @@
+///----------------------------------------------------------------------------------
+///   Endless Horde Zombie Shooter
+///   PlayerController.cs
+///   Author            : Vineet Kumar
+///   Last Modified     : 2022/01/19
+///   Description       : Player Controller bools for checking movement and action
+///   Revision History  : 1st ed. Set jump, run, fire and reload bools to refer
+///----------------------------------------------------------------------------------
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

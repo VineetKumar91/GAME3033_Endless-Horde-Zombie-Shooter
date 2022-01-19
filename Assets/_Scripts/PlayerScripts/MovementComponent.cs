@@ -3,8 +3,9 @@
 ///   MovementComponent.cs
 ///   Author            : Vineet Kumar
 ///   Last Modified     : 2022/01/19
-///   Description       : Movement Component of Player Character - James
-///   Revision History  : 1st ed. Setting movement, jump and run
+///   Description       : Movement and Animation Component of Player Character
+///   Revision History  : 2nd ed. Adding Animation using the created blendtree
+///                     and the parameters set in it for X and Y
 ///----------------------------------------------------------------------------------
 
 using System;
@@ -29,6 +30,14 @@ public class MovementComponent : MonoBehaviour
     private Vector2 inputVector = Vector2.zero;
     private Vector3 moveDirection = Vector3.zero;
 
+    // Animator and animator hashes
+    [Header("Animation")]
+    private Animator _playerAnimator;
+    public readonly int movementXHash = Animator.StringToHash("MovementX");
+    public readonly int movementYHash = Animator.StringToHash("MovementY");
+    public readonly int isJumpingHash = Animator.StringToHash("IsJumping");
+    public readonly int isRunningHash = Animator.StringToHash("IsRunning");
+
     /// <summary>
     /// Awake gets called first, so better to get references from here than Start()
     /// </summary>
@@ -36,6 +45,8 @@ public class MovementComponent : MonoBehaviour
     {
         _playerController = GetComponent<PlayerController>();
         m_rb = GetComponent<Rigidbody>();
+        _playerAnimator = GetComponent<Animator>();
+
     }
 
     // Start is called before the first frame update
@@ -76,6 +87,10 @@ public class MovementComponent : MonoBehaviour
     public void OnMovement(InputValue value)
     {
         inputVector = value.Get<Vector2>();
+
+        // Animation
+        _playerAnimator.SetFloat(movementXHash, inputVector.x);
+        _playerAnimator.SetFloat(movementYHash, inputVector.y);
     }
 
     /// <summary>
@@ -85,6 +100,9 @@ public class MovementComponent : MonoBehaviour
     public void OnRun(InputValue value)
     {
         _playerController.isRunning = value.isPressed;
+
+        // Animation
+        _playerAnimator.SetBool(isRunningHash, _playerController.isRunning);
     }
 
     /// <summary>
@@ -97,6 +115,9 @@ public class MovementComponent : MonoBehaviour
 
         // Impulse force upwards
         m_rb.AddForce((transform.up + moveDirection) * jumpForce, ForceMode.Impulse);
+
+        // Animation
+        _playerAnimator.SetBool(isJumpingHash, _playerController.isJumping);
     }
 
 
@@ -111,7 +132,11 @@ public class MovementComponent : MonoBehaviour
         {
             return;
         }
-
+        
+        // if colliding with an object (compare tag later)
         _playerController.isJumping = false;
+
+        // set jumping animation to false
+        _playerAnimator.SetBool(isJumpingHash, false);
     }
 }
