@@ -29,9 +29,12 @@ public class MovementComponent : MonoBehaviour
     // References
     private Vector2 inputVector = Vector2.zero;
     private Vector3 moveDirection = Vector3.zero;
-    private Vector2 lookInput = Vector2.zero;
 
+
+    // Look
+    private Vector2 lookInput = Vector2.zero;
     public float aimSensitivity = 1f;
+    public GameObject followTarget;
 
     // Animator and animator hashes
     [Header("Animation")]
@@ -40,6 +43,7 @@ public class MovementComponent : MonoBehaviour
     public readonly int movementYHash = Animator.StringToHash("MovementY");
     public readonly int isJumpingHash = Animator.StringToHash("IsJumping");
     public readonly int isRunningHash = Animator.StringToHash("IsRunning");
+    public readonly int isFiringHash = Animator.StringToHash("IsFiring");
 
     /// <summary>
     /// Awake gets called first, so better to get references from here than Start()
@@ -82,6 +86,10 @@ public class MovementComponent : MonoBehaviour
         // get movement direction and adjust position
         Vector3 movementDirection = moveDirection * (currentSpeed * Time.deltaTime);
         transform.position += movementDirection;
+
+
+        // Aiming/Looking
+
     }
 
     /// <summary>
@@ -133,12 +141,40 @@ public class MovementComponent : MonoBehaviour
         lookInput = value.Get<Vector2>();
         
         // if we aim up, down, adjust animations to have a mask that will let us properly animate Aim
+        // horizontal
+        followTarget.transform.rotation *= Quaternion.AngleAxis(lookInput.x * aimSensitivity, Vector3.up);
+
+        // vertical
+        followTarget.transform.rotation *= Quaternion.AngleAxis(lookInput.y * aimSensitivity, Vector3.left);
+
+        // Clamp the rotation <- look for a better way using cinemachine
+        var angles = followTarget.transform.localEulerAngles;
+        angles.z = 0;
+
+        var angle = followTarget.transform.localEulerAngles.x;
+
+        if (angle > 180 && angle < 340)
+        {
+            angles.x = 340;
+        }
+        else if (angle < 180 && angle > 40)
+        {
+            angles.x = 40;
+        }
+
+        followTarget.transform.localEulerAngles = angles;
+
+        // Rotate the player based on look
+        transform.rotation = Quaternion.Euler(0, followTarget.transform.rotation.eulerAngles.y, 0);
+
+        followTarget.transform.localEulerAngles = Vector3.zero;
 
     }
 
     public void OnFire(InputValue value)
     {
-
+        _playerController.isFiring = value.isPressed;
+        _playerAnimator.SetBool(isFiringHash, _playerController.isFiring);
     }
 
     public void OnReload(InputValue value)
