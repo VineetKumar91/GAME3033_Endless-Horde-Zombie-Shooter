@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     // Combat
     public bool isFiring;
     public bool isReloading;
+    public bool isAiming;
 
 
     //// Start is called before the first frame update
