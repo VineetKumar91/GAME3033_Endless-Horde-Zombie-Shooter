@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AK47Component : WeaponComponent
 {
+
     // Start is called before the first frame update
     void Start()
     {
@@ -14,5 +15,31 @@ public class AK47Component : WeaponComponent
     void Update()
     {
         
+    }
+
+    protected override void FireWeapon()
+    {
+        Vector3 hitLocation;
+
+        if (weaponStats.bulletsInClip > 0 && !isReloading && !weaponHolder._playerController.isRunning)
+        {
+            base.FireWeapon();
+            Ray screenRay = mainCamera.ScreenPointToRay(new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, 0f));
+            
+            // fix. put everything in the actual if condition
+            if (Physics.Raycast(screenRay, out RaycastHit hit, weaponStats.fireDistance, weaponStats.weaponHitLayers))
+            {
+                hitLocation = hit.point;
+
+                Vector3 hitDirection = hit.point - mainCamera.transform.position;
+
+                Debug.DrawRay(mainCamera.transform.position, hitDirection.normalized * weaponStats.fireDistance, Color.red, 1f);
+            }
+
+        }
+        else if (weaponStats.bulletsInClip <= 0)
+        {
+            weaponHolder.StartReloading();
+        }
     }
 }

@@ -43,7 +43,7 @@
                     "id": "231c1db7-873d-48d9-8f6b-d42836d3f82f",
                     "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": "Press(behavior=2)"
+                    "interactions": ""
                 },
                 {
                     "name": "Reload",

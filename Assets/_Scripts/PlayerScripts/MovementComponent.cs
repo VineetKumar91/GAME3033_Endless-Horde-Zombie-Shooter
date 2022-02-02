@@ -43,8 +43,6 @@ public class MovementComponent : MonoBehaviour
     public readonly int movementYHash = Animator.StringToHash("MovementY");
     public readonly int isJumpingHash = Animator.StringToHash("IsJumping");
     public readonly int isRunningHash = Animator.StringToHash("IsRunning");
-    public readonly int isFiringHash = Animator.StringToHash("IsFiring");
-    public readonly int isReloadingHash = Animator.StringToHash("IsReloading");
 
     /// <summary>
     /// Awake gets called first, so better to get references from here than Start()
@@ -66,6 +64,36 @@ public class MovementComponent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Aiming/Looking
+        // if we aim up, down, adjust animations to have a mask that will let us properly animate Aim
+        // horizontal
+        followTarget.transform.rotation *= Quaternion.AngleAxis(lookInput.x * aimSensitivity, Vector3.up);
+
+        // vertical
+        followTarget.transform.rotation *= Quaternion.AngleAxis(lookInput.y * aimSensitivity, Vector3.left);
+
+        // Clamp the rotation <- look for a better way using cinemachine
+        var angles = followTarget.transform.localEulerAngles;
+        angles.z = 0;
+
+        var angle = followTarget.transform.localEulerAngles.x;
+
+        if (angle > 180 && angle < 300)
+        {
+            angles.x = 300;
+        }
+        else if (angle < 180 && angle > 70)
+        {
+            angles.x = 70;
+        }
+
+        followTarget.transform.localEulerAngles = angles;
+
+        // Rotate the player based on look
+        transform.rotation = Quaternion.Euler(0, followTarget.transform.rotation.eulerAngles.y, 0);
+
+        followTarget.transform.localEulerAngles = Vector3.zero;
+
         // movement won't happen during jumping
         if (_playerController.isJumping)
         {
@@ -88,8 +116,6 @@ public class MovementComponent : MonoBehaviour
         Vector3 movementDirection = moveDirection * (currentSpeed * Time.deltaTime);
         transform.position += movementDirection;
 
-
-        // Aiming/Looking
 
     }
 
@@ -140,50 +166,9 @@ public class MovementComponent : MonoBehaviour
     public void OnLook(InputValue value)
     {
         lookInput = value.Get<Vector2>();
-        
-        // if we aim up, down, adjust animations to have a mask that will let us properly animate Aim
-        // horizontal
-        followTarget.transform.rotation *= Quaternion.AngleAxis(lookInput.x * aimSensitivity, Vector3.up);
-
-        // vertical
-        followTarget.transform.rotation *= Quaternion.AngleAxis(lookInput.y * aimSensitivity, Vector3.left);
-
-        // Clamp the rotation <- look for a better way using cinemachine
-        var angles = followTarget.transform.localEulerAngles;
-        angles.z = 0;
-
-        var angle = followTarget.transform.localEulerAngles.x;
-
-        if (angle > 180 && angle < 340)
-        {
-            angles.x = 340;
-        }
-        else if (angle < 180 && angle > 40)
-        {
-            angles.x = 40;
-        }
-
-        followTarget.transform.localEulerAngles = angles;
-
-        // Rotate the player based on look
-        transform.rotation = Quaternion.Euler(0, followTarget.transform.rotation.eulerAngles.y, 0);
-
-        followTarget.transform.localEulerAngles = Vector3.zero;
-
     }
 
-    public void OnFire(InputValue value)
-    {
-        _playerController.isFiring = value.isPressed;
-        _playerAnimator.SetBool(isFiringHash, _playerController.isFiring);
-    }
 
-    // 2nd Feb
-    public void OnReload(InputValue value)
-    {
-        _playerController.isReloading = value.isPressed;
-        _playerAnimator.SetBool(isReloadingHash, _playerController.isReloading);
-    }
 
     /// <summary>
     /// Collision just detected ?
