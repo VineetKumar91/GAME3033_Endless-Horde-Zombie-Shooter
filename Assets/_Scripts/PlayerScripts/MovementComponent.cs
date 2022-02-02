@@ -44,6 +44,7 @@ public class MovementComponent : MonoBehaviour
     public readonly int isJumpingHash = Animator.StringToHash("IsJumping");
     public readonly int isRunningHash = Animator.StringToHash("IsRunning");
     public readonly int isFiringHash = Animator.StringToHash("IsFiring");
+    public readonly int isReloadingHash = Animator.StringToHash("IsReloading");
 
     /// <summary>
     /// Awake gets called first, so better to get references from here than Start()
@@ -177,9 +178,11 @@ public class MovementComponent : MonoBehaviour
         _playerAnimator.SetBool(isFiringHash, _playerController.isFiring);
     }
 
+    // 2nd Feb
     public void OnReload(InputValue value)
     {
-
+        _playerController.isReloading = value.isPressed;
+        _playerAnimator.SetBool(isReloadingHash, _playerController.isReloading);
     }
 
     /// <summary>
