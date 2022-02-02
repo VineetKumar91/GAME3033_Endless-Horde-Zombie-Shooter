@@ -92,7 +92,9 @@ public class MovementComponent : MonoBehaviour
         // Rotate the player based on look
         transform.rotation = Quaternion.Euler(0, followTarget.transform.rotation.eulerAngles.y, 0);
 
-        followTarget.transform.localEulerAngles = Vector3.zero;
+        // Bug fix for looking up and down
+        //followTarget.transform.localEulerAngles = Vector3.zero; <-- All angles 0 x should be angles.x
+        followTarget.transform.localEulerAngles = new Vector3(angles.x, 0f, 0f);
 
         // movement won't happen during jumping
         if (_playerController.isJumping)
