@@ -66,6 +66,7 @@ public class WeaponComponent : MonoBehaviour
     private void Awake()
     {
         mainCamera = Camera.main;
+        //firingEffect.gameObject.transform.parent = firingEffectLocation;
     }
 
     // Update is called once per frame
@@ -113,7 +114,7 @@ public class WeaponComponent : MonoBehaviour
         CancelInvoke(nameof(FireWeapon));
 
         // particle effect
-        if (firingEffect.isPlaying)
+        if (firingEffect)
         {
             firingEffect.Stop();
         }
@@ -142,7 +143,7 @@ public class WeaponComponent : MonoBehaviour
     protected virtual void ReloadWeapon()
     {
         // particle effect
-        if (firingEffect.isPlaying)
+        if (firingEffect)
         {
             firingEffect.Stop();
         }
