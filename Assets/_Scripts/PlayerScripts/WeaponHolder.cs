@@ -92,7 +92,7 @@ public class WeaponHolder : MonoBehaviour
     public void OnReload(InputValue value)
     {
         _playerController.isReloading = value.isPressed;
-        animator.SetBool(isReloadingHash, _playerController.isReloading);
+        StartReloading();
     }
 
     // Start Firing weapon
@@ -101,6 +101,7 @@ public class WeaponHolder : MonoBehaviour
 
         if (equippedWeapon.weaponStats.bulletsInClip <= 0)
         {
+            StartReloading();
             return;
         }
 
@@ -120,6 +121,42 @@ public class WeaponHolder : MonoBehaviour
     // Reload weapon
     public void StartReloading()
     {
+        // If Reloading starts, stop firing
+        if (_playerController.isFiring)
+        {
+            StopFiring();
+        }
 
+        // If out of TOTAL bullets, no point of reloading
+        if (equippedWeapon.weaponStats.totalBullets <= 0)
+        {
+            return;
+        }
+
+        // Animator
+        animator.SetBool(isReloadingHash, true);
+        equippedWeapon.StartReloading();
+
+        InvokeRepeating(nameof(StopReloading), 0, 0.1f);
+    }
+
+
+    // Stop Reloading Weapon
+    public void StopReloading()
+    {
+        if (animator.GetBool(isReloadingHash))
+        {
+            return;
+        }
+
+        // Stop reloading 
+        _playerController.isReloading = false;
+        // Call the weapon's stop reloading
+        equippedWeapon.StopReloading();
+        // Start animation
+        animator.SetBool(isReloadingHash, false);
+
+        // stop reloading invoke is stopped
+        CancelInvoke(nameof(StopReloading));
     }
 }

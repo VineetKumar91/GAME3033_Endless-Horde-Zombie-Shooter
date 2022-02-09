@@ -33,6 +33,7 @@ public struct WeaponStats
     public bool repeating;
     public LayerMask weaponHitLayers;
     public WeaponFiringPattern firingPattern;
+    public int totalBullets;
 }
 
 
@@ -49,6 +50,12 @@ public class WeaponComponent : MonoBehaviour
     public bool isReloading = false;
 
     protected Camera mainCamera;
+
+    // Feb 9th
+    [Header("Particle FX")]
+    [SerializeField]
+    protected ParticleSystem firingEffect;
+    protected Transform firingEffectLocation;
 
     // Start is called before the first frame update
     void Start()
@@ -104,11 +111,65 @@ public class WeaponComponent : MonoBehaviour
     {
         isFiring = false;
         CancelInvoke(nameof(FireWeapon));
+
+        // particle effect
+        if (firingEffect.isPlaying)
+        {
+            firingEffect.Stop();
+        }
     }
 
     protected virtual void FireWeapon()
     {
-        Debug.Log("Firing Weapon!!!");
+        //Debug.Log("Firing Weapon!!!");
         weaponStats.bulletsInClip--;
+    }
+
+
+    // Deal with ammo counts & particle effects if shooting
+    public virtual void StartReloading()
+    {
+        isReloading = true;
+        ReloadWeapon();
+    }
+
+
+    public virtual void StopReloading()
+    {
+        isReloading = false;
+    }
+
+    protected virtual void ReloadWeapon()
+    {
+        // particle effect
+        if (firingEffect.isPlaying)
+        {
+            firingEffect.Stop();
+        }
+
+        // if Firing effect, "hide" it here..
+
+        // Example of value of AK to understand logic...
+        // get something like -470
+        int bulletsToReload = weaponStats.clipSize - weaponStats.totalBullets;
+
+        // less than 0
+        if (bulletsToReload < 0)
+        {
+            // put max clip size in bullets, that is, 30 bullets
+            weaponStats.bulletsInClip = weaponStats.clipSize;
+
+            // subtract the bullets of clip size (30) - 500 <--
+            weaponStats.totalBullets -= weaponStats.clipSize;
+
+        }
+        else
+        {
+            // else the size is something like 30 - (30-n), less than clip size
+            weaponStats.bulletsInClip = weaponStats.totalBullets;
+
+            // and set total bullets, cause its finished
+            weaponStats.totalBullets = 0;
+        }
     }
 }

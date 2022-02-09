@@ -24,6 +24,16 @@ public class AK47Component : WeaponComponent
         if (weaponStats.bulletsInClip > 0 && !isReloading && !weaponHolder._playerController.isRunning)
         {
             base.FireWeapon();
+
+            // Particle effect
+
+            if (firingEffect)
+            {
+                firingEffect.Play();
+            }
+
+            //---------
+
             Ray screenRay = mainCamera.ScreenPointToRay(new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, 0f));
             
             // fix. put everything in the actual if condition
@@ -35,6 +45,8 @@ public class AK47Component : WeaponComponent
 
                 Debug.DrawRay(mainCamera.transform.position, hitDirection.normalized * weaponStats.fireDistance, Color.red, 1f);
             }
+
+            Debug.Log("Bullet Count = " + weaponStats.bulletsInClip);
 
         }
         else if (weaponStats.bulletsInClip <= 0)
