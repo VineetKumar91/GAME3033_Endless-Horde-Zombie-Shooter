@@ -50,6 +50,12 @@ public class WeaponHolder : MonoBehaviour
         // 2nd Feb
         equippedWeapon = spawnedWeapon.GetComponent<WeaponComponent>();
         equippedWeapon.Initialize(this);
+
+        // Events...
+        PlayerEvents.InvokeOnWeaponEquipped(equippedWeapon);
+        /// Events
+         
+
         GripIKScoketLocation = equippedWeapon.gripLocation;
         _playerController = GetComponent<PlayerController>();
     }
