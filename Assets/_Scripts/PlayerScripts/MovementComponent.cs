@@ -44,6 +44,9 @@ public class MovementComponent : MonoBehaviour
     public readonly int isJumpingHash = Animator.StringToHash("IsJumping");
     public readonly int isRunningHash = Animator.StringToHash("IsRunning");
 
+    // W06
+    public readonly int aimVertical = Animator.StringToHash("AimVertical");
+
     /// <summary>
     /// Awake gets called first, so better to get references from here than Start()
     /// </summary>
@@ -52,6 +55,13 @@ public class MovementComponent : MonoBehaviour
         _playerController = GetComponent<PlayerController>();
         m_rb = GetComponent<Rigidbody>();
         _playerAnimator = GetComponent<Animator>();
+
+        // W06 - If inactive, then deactivate cursor (fire active on triggers when needed to the event)
+        // Cursor
+        if (!GameManager.Instance.cursorActive)
+        {
+            AppEvents.InvokeMouseCursorEnable(false);
+        }
 
     }
 
@@ -119,6 +129,7 @@ public class MovementComponent : MonoBehaviour
         transform.position += movementDirection;
 
 
+        
     }
 
     /// <summary>
@@ -151,6 +162,11 @@ public class MovementComponent : MonoBehaviour
     /// <param name="value"></param>
     public void OnJump(InputValue value)
     {
+        if (_playerController.isJumping)
+        {
+            return;
+        }
+
         _playerController.isJumping = value.isPressed;
 
         // Impulse force upwards
@@ -168,6 +184,9 @@ public class MovementComponent : MonoBehaviour
     public void OnLook(InputValue value)
     {
         lookInput = value.Get<Vector2>();
+
+        // W06 Changes
+        _playerAnimator.SetFloat(aimVertical,lookInput.y);
     }
 
 
