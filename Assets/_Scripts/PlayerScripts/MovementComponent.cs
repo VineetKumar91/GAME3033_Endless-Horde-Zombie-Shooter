@@ -99,6 +99,17 @@ public class MovementComponent : MonoBehaviour
 
         followTarget.transform.localEulerAngles = angles;
 
+        // Vertical Aim Fix****************************
+        float min = -60;
+        float max = 70.0f;
+        float range = max - min;
+        float offsetToZero = 0 - min;
+        float aimAngle = followTarget.transform.localEulerAngles.x;
+        aimAngle = (aimAngle > 180) ? aimAngle - 360 : aimAngle;
+        float val = (aimAngle + offsetToZero) / (range);
+        print(val);
+        _playerAnimator.SetFloat(aimVertical, val);
+
         // Rotate the player based on look
         transform.rotation = Quaternion.Euler(0, followTarget.transform.rotation.eulerAngles.y, 0);
 
