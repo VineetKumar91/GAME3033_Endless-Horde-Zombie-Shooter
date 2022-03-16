@@ -4,24 +4,37 @@ using UnityEngine;
 
 public class State
 {
-    protected StateMachine stateMachine;
+    protected ZombieStateMachine ZombieStateMachine;
 
     public float UpdateInterval { get; protected set; } = 1f;
 
-    protected State(StateMachine _stateMachine)
+    protected State(ZombieStateMachine zombieStateMachine)
     {
-        stateMachine = _stateMachine;
+        ZombieStateMachine = zombieStateMachine;
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public virtual void Start()
     {
-        
+
     }
 
-    // Update is called once per frame
-    void Update()
+    public virtual void IntervalUpdate()
     {
-        
+
+    }
+
+    public virtual void Update()
+    {
+
+    }
+
+    public virtual void FixedUpdate()
+    {
+
+    }
+
+    public virtual void Exit()
+    {
+
     }
 }
