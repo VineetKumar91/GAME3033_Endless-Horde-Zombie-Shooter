@@ -45,7 +45,7 @@ public class MovementComponent : MonoBehaviour
     public readonly int isRunningHash = Animator.StringToHash("IsRunning");
 
     // W06
-    public readonly int aimVertical = Animator.StringToHash("AimVertical");
+    public readonly int aimVerticalHash = Animator.StringToHash("AimVertical");
 
     /// <summary>
     /// Awake gets called first, so better to get references from here than Start()
@@ -82,7 +82,7 @@ public class MovementComponent : MonoBehaviour
         // vertical
         followTarget.transform.rotation *= Quaternion.AngleAxis(lookInput.y * aimSensitivity, Vector3.left);
 
-        // Clamp the rotation <- look for a better way using cinemachine
+       // Clamp the rotation <- look for a better way using cinemachine
         var angles = followTarget.transform.localEulerAngles;
         angles.z = 0;
 
@@ -108,7 +108,8 @@ public class MovementComponent : MonoBehaviour
         aimAngle = (aimAngle > 180) ? aimAngle - 360 : aimAngle;
         float val = (aimAngle + offsetToZero) / (range);
         print(val);
-        _playerAnimator.SetFloat(aimVertical, val);
+        _playerAnimator.SetFloat(aimVerticalHash, val);
+
 
         // Rotate the player based on look
         transform.rotation = Quaternion.Euler(0, followTarget.transform.rotation.eulerAngles.y, 0);
@@ -197,7 +198,7 @@ public class MovementComponent : MonoBehaviour
         lookInput = value.Get<Vector2>();
 
         // W06 Changes
-        _playerAnimator.SetFloat(aimVertical,lookInput.y);
+        //_playerAnimator.SetFloat(aimVerticalHash,lookInput.y);
     }
 
 
