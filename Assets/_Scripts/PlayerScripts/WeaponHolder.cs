@@ -127,6 +127,12 @@ public class WeaponHolder : MonoBehaviour
     // Reload weapon
     public void StartReloading()
     {
+        if (equippedWeapon.isReloading ||
+            equippedWeapon.weaponStats.bulletsInClip == equippedWeapon.weaponStats.clipSize)
+        {
+            return;
+        }
+
         // If Reloading starts, stop firing
         if (_playerController.isFiring)
         {

@@ -2021,9 +2021,10 @@ GameObject:
   - component: {fileID: 2739909919187973566}
   - component: {fileID: 8912027684683986242}
   - component: {fileID: 8912027684683986301}
+  - component: {fileID: 8912027684683986303}
   - component: {fileID: 8912027684683986300}
   - component: {fileID: 8912027684683986243}
-  - component: {fileID: 8912027684683986303}
+  - component: {fileID: 4994434233831105987}
   m_Layer: 0
   m_Name: James
   m_TagString: Untagged
@@ -2110,37 +2111,6 @@ CapsuleCollider:
   m_Height: 1.8016708
   m_Direction: 1
   m_Center: {x: 0, y: 0.9104495, z: 0}
---- !u!114 &8912027684683986300
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8912027684683986302}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17de6821b8e0634409a8beaebaa9ec1d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isJumping: 0
-  isRunning: 0
-  isFiring: 0
-  isReloading: 0
---- !u!114 &8912027684683986243
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8912027684683986302}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b90033b1e17488c459410538d14c680c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  walkSpeed: 5
-  runSpeed: 10
-  jumpForce: 5
 --- !u!54 &8912027684683986303
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2157,6 +2127,54 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &8912027684683986300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8912027684683986302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17de6821b8e0634409a8beaebaa9ec1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isJumping: 0
+  isRunning: 0
+  isFiring: 0
+  isReloading: 0
+  isAiming: 0
+--- !u!114 &8912027684683986243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8912027684683986302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b90033b1e17488c459410538d14c680c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  walkSpeed: 5
+  runSpeed: 10
+  jumpForce: 5
+  aimSensitivity: 1
+  followTarget: {fileID: 0}
+--- !u!114 &4994434233831105987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8912027684683986302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd24f868c720f824fb06b3883518f903, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentHealth: 250
+  maxHealth: 250
 --- !u!1 &8928325359441588867
 GameObject:
   m_ObjectHideFlags: 0

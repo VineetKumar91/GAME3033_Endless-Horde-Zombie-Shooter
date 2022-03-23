@@ -152,24 +152,39 @@ public class WeaponComponent : MonoBehaviour
 
         // Example of value of AK to understand logic...
         // get something like -470
-        int bulletsToReload = weaponStats.clipSize - weaponStats.totalBullets;
 
-        // less than 0
-        if (bulletsToReload < 0)
+        // 23 March - Fix
+        // Update the actual bullets to reload, bullets clip capacity - clips remaining
+
+        int bulletsToReload = weaponStats.totalBullets - (weaponStats.clipSize - weaponStats.bulletsInClip);
+
+        // greater than 0
+        if (bulletsToReload > 0)
         {
-            // put max clip size in bullets, that is, 30 bullets
-            weaponStats.bulletsInClip = weaponStats.clipSize;
+            //// put max clip size in bullets, that is, 30 bullets
+            //weaponStats.bulletsInClip = weaponStats.clipSize;
+            //
+            //// subtract the bullets of clip size (30) - 500 <--
+            //weaponStats.totalBullets -= weaponStats.clipSize;
 
-            // subtract the bullets of clip size (30) - 500 <--
-            weaponStats.totalBullets -= weaponStats.clipSize;
+            // 23 March - Fix
+            weaponStats.totalBullets = bulletsToReload;
+
+            weaponStats.bulletsInClip = weaponStats.clipSize;
 
         }
         else
         {
-            // else the size is something like 30 - (30-n), less than clip size
-            weaponStats.bulletsInClip = weaponStats.totalBullets;
+            //// else the size is something like 30 - (30-n), less than clip size
+            //weaponStats.bulletsInClip = weaponStats.totalBullets;
+            //
+            //// and set total bullets, cause its finished
+            //weaponStats.totalBullets = 0;
 
-            // and set total bullets, cause its finished
+
+            // 23 March - Fix
+            weaponStats.bulletsInClip += weaponStats.totalBullets;
+
             weaponStats.totalBullets = 0;
         }
     }

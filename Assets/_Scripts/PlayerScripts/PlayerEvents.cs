@@ -19,4 +19,18 @@ public class PlayerEvents : MonoBehaviour
         // Invoke if weapon equipped
         OnWeaponEquipped?.Invoke(weaponComponent);
     }
+
+    // Listener for health component
+    public delegate void OnHealthInitializeEvent(HealthComponent healthComponent);
+
+    // A static event for health initialization
+    public static event OnHealthInitializeEvent OnHealthInitialized;
+
+    // static invoke
+    public static void Invoke_OnHealthInitialized(HealthComponent healthComponent)
+    {
+        // invoke health component
+        OnHealthInitialized?.Invoke(healthComponent);
+    }
+
 }
