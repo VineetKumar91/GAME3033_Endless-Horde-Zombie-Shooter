@@ -201,8 +201,6 @@ public class MovementComponent : MonoBehaviour
         //_playerAnimator.SetFloat(aimVerticalHash,lookInput.y);
     }
 
-
-
     /// <summary>
     /// Collision just detected ?
     /// Collision Enter

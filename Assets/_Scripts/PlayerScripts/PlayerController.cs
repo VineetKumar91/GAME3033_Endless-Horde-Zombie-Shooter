@@ -10,6 +10,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
@@ -22,6 +23,14 @@ public class PlayerController : MonoBehaviour
     public bool isReloading;
     public bool isAiming;
 
+    // Inventory
+    public InventoryComponent Inventory;
+
+    public void OnInventory(InputValue value)
+    {
+        Debug.Log("Inventory Button Pressed");
+        Inventory.gameObject.SetActive(!Inventory.gameObject.activeSelf);
+    }
 
     //// Start is called before the first frame update
     //void Start()
