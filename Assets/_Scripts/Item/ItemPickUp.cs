@@ -24,7 +24,7 @@ public class ItemPickUp : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        InstanstiateItem();
+        
     }
 
     private void InstanstiateItem()
@@ -33,10 +33,6 @@ public class ItemPickUp : MonoBehaviour
         if (amount > 0)
         {
             ItemInstance.SetAmount(amount);
-        }
-        else
-        {
-            ItemInstance.SetAmount(pickupItem.amountValue);
         }
 
         ApplyMesh();
@@ -72,17 +68,6 @@ public class ItemPickUp : MonoBehaviour
 
         // add to inventory here
         // get reference to player inventory, add item to it
-        InventoryComponent playerInventory = other.GetComponent<InventoryComponent>();
-
-        if (playerInventory)
-        {
-            playerInventory.AddItem(ItemInstance,amount);
-        }
-
-        if (ItemInstance.itemCategory == ItemCategory.Weapon)
-        {
-            
-        }
 
         Destroy(gameObject);
     }

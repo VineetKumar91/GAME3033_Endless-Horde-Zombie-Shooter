@@ -9,7 +9,7 @@ public abstract class EquippableScriptable : ItemScript
         get => isEquipped;
         set
         {
-            isEquipped = value;
+            Equipped = value;
             OnEquipStatusChange?.Invoke();
         }
     }

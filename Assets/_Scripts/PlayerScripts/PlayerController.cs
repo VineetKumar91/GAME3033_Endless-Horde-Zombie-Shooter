@@ -7,7 +7,6 @@
 ///   Revision History  : 1st ed. Set jump, run, fire and reload bools to refer
 ///----------------------------------------------------------------------------------
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,47 +24,12 @@ public class PlayerController : MonoBehaviour
     public bool isAiming;
 
     // Inventory
-    public bool inInventory;
     public InventoryComponent Inventory;
-    public GameUIController UIController;
-
-    private void Awake()
-    {
-        if (Inventory == null)
-        {
-            Inventory = GetComponent<InventoryComponent>();
-        }
-
-        if (UIController == null)
-        {
-            UIController = FindObjectOfType<GameUIController>();
-        }
-    }
 
     public void OnInventory(InputValue value)
     {
-        if (inInventory)
-        {
-            inInventory = false;
-        }
-        else
-        {
-            inInventory = true;
-        }
-
-        OpenInventory(inInventory);
-    }
-
-    private void OpenInventory(bool open)
-    {
-        if (open)
-        {
-            UIController.EnableInventoryMenu();
-        }
-        else
-        {
-            UIController.EnableGameMenu();
-        }
+        Debug.Log("Inventory Button Pressed");
+        Inventory.gameObject.SetActive(!Inventory.gameObject.activeSelf);
     }
 
     //// Start is called before the first frame update
