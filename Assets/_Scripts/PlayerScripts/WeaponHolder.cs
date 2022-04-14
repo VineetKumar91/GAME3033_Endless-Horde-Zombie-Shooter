@@ -219,6 +219,9 @@ public class WeaponHolder : MonoBehaviour
         {
             equippedWeapon.weaponStats = weaponAmmoDictionary[equippedWeapon.weaponStats.weaponType];
         }
+
+        Debug.Log("Equpping@");
+
         PlayerEvents.InvokeOnWeaponEquipped(equippedWeapon);
     }
 

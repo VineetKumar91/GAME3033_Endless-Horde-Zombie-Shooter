@@ -15,10 +15,11 @@ MonoBehaviour:
   name: AK47
   itemCategory: 1
   itemPrefab: {fileID: 6138427679182937677, guid: ad49a19d2c4adc94b838606a5d459f85, type: 3}
-  stackable: 0
-  maxSize: 1
-  amountValue: 1
+  isStackable: 0
+  maxSize: 30
+  amountValue: 30
   weaponStats:
+    weaponType: 2
     weaponName: AK-47
     damage: 35
     bulletsInClip: 30

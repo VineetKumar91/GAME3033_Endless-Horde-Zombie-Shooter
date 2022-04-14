@@ -20,25 +20,26 @@ public class WeaponAmmoUI : MonoBehaviour
     private WeaponComponent weaponComponent;
 
     // "All things should be perfectly balanced" - Nick Falsitta
-    private void OnEnable()
+    private void Start()
     {
         // += :| wow.
-        PlayerEvents.OnWeaponEquipped += OnWeaponEqupped;
+        PlayerEvents.OnWeaponEquipped += OnWeaponEquipped;
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
-        {
-            PlayerEvents.OnWeaponEquipped -= OnWeaponEqupped;
-        }
+        
+            PlayerEvents.OnWeaponEquipped -= OnWeaponEquipped;
+        
     }
 
     /// <summary>
     /// Keep same signature as that event
     /// </summary>
     /// <param name="_weaponComponent"></param>
-    void OnWeaponEqupped(WeaponComponent _weaponComponent)
+    void OnWeaponEquipped(WeaponComponent _weaponComponent)
     {
+        Debug.Log("Something");
         weaponComponent = _weaponComponent;
     }
 
@@ -49,11 +50,11 @@ public class WeaponAmmoUI : MonoBehaviour
         {
             return;
         }
-        else
-        {
-            TMP_weaponName.text = weaponComponent.weaponStats.weaponName;
-            TMP_currentBullets.text = weaponComponent.weaponStats.bulletsInClip.ToString();
-            TMP_totalBullets.text = weaponComponent.weaponStats.totalBullets.ToString();
-        }
+       
+        
+        TMP_weaponName.text = weaponComponent.weaponStats.weaponName;
+        TMP_currentBullets.text = weaponComponent.weaponStats.bulletsInClip.ToString();
+        TMP_totalBullets.text = weaponComponent.weaponStats.totalBullets.ToString();
+        
     }
 }

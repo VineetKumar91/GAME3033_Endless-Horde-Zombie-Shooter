@@ -56,19 +56,19 @@ public class MovementComponent : MonoBehaviour
         m_rb = GetComponent<Rigidbody>();
         _playerAnimator = GetComponent<Animator>();
 
-        // W06 - If inactive, then deactivate cursor (fire active on triggers when needed to the event)
-        // Cursor
-        if (!GameManager.Instance.cursorActive)
-        {
-            AppEvents.InvokeMouseCursorEnable(false);
-        }
+       
 
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        // W06 - If inactive, then deactivate cursor (fire active on triggers when needed to the event)
+        // Cursor
+        if (!GameManager.Instance.cursorActive)
+        {
+            AppEvents.InvokeMouseCursorEnable(false);
+        }
     }
 
     // Update is called once per frame
