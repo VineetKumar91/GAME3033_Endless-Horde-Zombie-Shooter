@@ -16,7 +16,7 @@ public class InventoryCanvas : GameHUDWidget
         PlayerController = FindObjectOfType<PlayerController>();
         CategoryButtons = GetComponentsInChildren<CategorySelectButton>().ToList();
         ItemDisplayPanel = GetComponentInChildren<ItemDisplayPanel>();
-        foreach(CategorySelectButton button in CategoryButtons)
+        foreach (CategorySelectButton button in CategoryButtons)
         {
             button.Initialize(this);
         }
@@ -24,17 +24,17 @@ public class InventoryCanvas : GameHUDWidget
 
     private void OnEnable()
     {
-        if (!PlayerController || !PlayerController.Inventory) return;
-        if (PlayerController.Inventory.GetItemCount() <= 0) return;
+        if (!PlayerController || !PlayerController.inventory) return;
+        if (PlayerController.inventory.GetItemCount() <= 0) return;
 
-        ItemDisplayPanel.PopulatePanel(PlayerController.Inventory.GetItemsOfCategory(ItemCategory.None));
+        ItemDisplayPanel.PopulatePanel(PlayerController.inventory.GetItemsOfCategory(ItemCategory.NONE));
     }
 
     public void SelectCategory(ItemCategory category)
     {
-        if (!PlayerController || !PlayerController.Inventory) return;
-        if (PlayerController.Inventory.GetItemCount() <= 0) return;
+        if (!PlayerController || !PlayerController.inventory) return;
+        if (PlayerController.inventory.GetItemCount() <= 0) return;
 
-        ItemDisplayPanel.PopulatePanel(PlayerController.Inventory.GetItemsOfCategory(category));
+        ItemDisplayPanel.PopulatePanel(PlayerController.inventory.GetItemsOfCategory(category));
     }
 }

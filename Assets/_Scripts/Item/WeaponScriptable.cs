@@ -15,11 +15,13 @@ public class WeaponScriptable : EquippableScriptable
         if (Equipped)
         {
             // unequip from inventory and controller
-
+            playerController.weaponHolder.UnquipWeapon();
         }
         else
         {
             // invoke on weapon equipped from player events here from inventory and equip weapon from weapon holder on player controller
+            playerController.weaponHolder.UnquipWeapon();
+            playerController.weaponHolder.EquipWeapon(this);
         }
 
         base.UseItem(playerController);

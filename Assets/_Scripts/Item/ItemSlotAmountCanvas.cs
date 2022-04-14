@@ -26,7 +26,7 @@ public class ItemSlotAmountCanvas : MonoBehaviour
 
     public void Initialize(ItemScript item)
     {
-        if (!item.stackable) return;
+        if (!item.isStackable) return;
         Item = item;
         ShowWidget();
         Item.OnAmountChange += OnAmountChange;

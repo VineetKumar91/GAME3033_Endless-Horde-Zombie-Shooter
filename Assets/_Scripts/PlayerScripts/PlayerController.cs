@@ -25,47 +25,39 @@ public class PlayerController : MonoBehaviour
     public bool isAiming;
 
     // Inventory
-    public bool inInventory;
-    public InventoryComponent Inventory;
-    public GameUIController UIController;
+    public InventoryComponent inventory;
+    public WeaponHolder weaponHolder;
+    public GameUIController gameUIController;
+    public HealthComponent healthComponent;
+    public bool isInventoryOn = false;
 
     private void Awake()
     {
-        if (Inventory == null)
+        if (inventory == null)
         {
-            Inventory = GetComponent<InventoryComponent>();
+            inventory = GetComponent<InventoryComponent>();
         }
 
-        if (UIController == null)
+        if (weaponHolder == null)
         {
-            UIController = FindObjectOfType<GameUIController>();
+            weaponHolder = GetComponent<WeaponHolder>();
+        }
+
+        if (gameUIController == null)
+        {
+            gameUIController = FindObjectOfType<GameUIController>();
+        }
+        if (healthComponent == null)
+        {
+            healthComponent = GetComponent<HealthComponent>();
         }
     }
 
     public void OnInventory(InputValue value)
     {
-        if (inInventory)
-        {
-            inInventory = false;
-        }
-        else
-        {
-            inInventory = true;
-        }
-
-        OpenInventory(inInventory);
-    }
-
-    private void OpenInventory(bool open)
-    {
-        if (open)
-        {
-            UIController.EnableInventoryMenu();
-        }
-        else
-        {
-            UIController.EnableGameMenu();
-        }
+        isInventoryOn = !isInventoryOn;
+        gameUIController.ToggleInventory(isInventoryOn);
+        AppEvents.InvokeMouseCursorEnable(isInventoryOn);
     }
 
     //// Start is called before the first frame update

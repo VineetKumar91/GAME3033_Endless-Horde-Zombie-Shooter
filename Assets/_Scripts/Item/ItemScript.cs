@@ -2,22 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public enum ItemCategory
 {
-    None,
-    Weapon,
-    Consumable,
-    Equipment,
-    Ammo,
+    NONE,
+    WEAPON,
+    CONSUMABLE,
+    EQUIPMENT,
+    AMMO,
+    TOTAL_ITEMS
 }
 
 public abstract class ItemScript : ScriptableObject
 {
     public string name = "Item";
-    public ItemCategory itemCategory = ItemCategory.None;
+    public ItemCategory itemCategory = ItemCategory.NONE;
     public GameObject itemPrefab;
-    public bool stackable;
+    public bool isStackable;
     public int maxSize = 1;
 
     public delegate void AmountChange();
@@ -31,12 +31,7 @@ public abstract class ItemScript : ScriptableObject
 
     public int amountValue = 1;
 
-
-    public PlayerController controller
-    {
-        get;
-        private set;
-    }
+    public PlayerController controller { get; private set; }
 
     public virtual void Initialize(PlayerController playerController)
     {
@@ -48,8 +43,12 @@ public abstract class ItemScript : ScriptableObject
     public virtual void DeleteItem(PlayerController playerController)
     {
         OnItemDestroyed?.Invoke();
+        playerController.inventory.DeleteItem(this);
+    }
 
-        // delete item here
+    public virtual void DropItem(PlayerController playerController)
+    {
+        OnItemDropped?.Invoke();
     }
 
     public void ChangeAmount(int amount)

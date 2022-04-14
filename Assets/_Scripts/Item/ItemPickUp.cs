@@ -2,86 +2,89 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class ItemPickUp : MonoBehaviour
 {
     [SerializeField]
-    ItemScript pickupItem;
+    private ItemScript pickupItem;
 
-
-    [Tooltip("Manual override for drop amount, if left at -1, it will use the amount from scriptable object")]
+    [Tooltip("Manual override settings for drop amount, if left at -1, it will use the amount from the scriptable object")]
     [SerializeField]
-    private int amount = -1;
+    int amount = 1;
 
-    [SerializeField] 
-    private MeshRenderer propMeshRenderer;
+    [SerializeField] MeshRenderer propMeshRenderer;
+    [SerializeField] MeshFilter propMeshFilter;
+    [SerializeField] private ItemTable itemTable;
 
-    [SerializeField] 
-    private MeshFilter propMeshFilter;
-
-    private ItemScript ItemInstance;
+    ItemScript itemInstance;
 
     // Start is called before the first frame update
     void Start()
     {
-        InstanstiateItem();
-    }
-
-    private void InstanstiateItem()
-    {
-        ItemInstance = Instantiate(pickupItem);
-        if (amount > 0)
+        if (itemTable != null)
         {
-            ItemInstance.SetAmount(amount);
+            int randomItemIndex = (int)Random.Range(0, itemTable.itemTable.Count);
+            pickupItem = itemTable.getItemIndex(randomItemIndex);
         }
-        else
-        {
-            ItemInstance.SetAmount(pickupItem.amountValue);
-        }
-
-        ApplyMesh();
-    }
-
-
-
-    private void ApplyMesh()
-    {
-        if (propMeshFilter)
-        {
-            propMeshFilter.mesh = pickupItem.itemPrefab.GetComponentInChildren<MeshFilter>().sharedMesh;
-        }
-
-        if (propMeshRenderer)
-        {
-            propMeshRenderer.materials = pickupItem.itemPrefab.GetComponentInChildren<MeshRenderer>().sharedMaterials;
-        }
+        InstantiateItem();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
+    }
+
+    private void InstantiateItem()
+    {
+        itemInstance = Instantiate(pickupItem);
+        if (amount > 0)
+        {
+            itemInstance.SetAmount(amount);
+        }
+        else
+        {
+            itemInstance.SetAmount(pickupItem.amountValue);
+        }
+        ApplyMesh();
+    }
+
+    private void ApplyMesh()
+    {
+        if (propMeshFilter) propMeshFilter.mesh = pickupItem.itemPrefab.GetComponentInChildren<MeshFilter>().sharedMesh;
+        if (propMeshRenderer) propMeshRenderer.materials = pickupItem.itemPrefab.GetComponentInChildren<MeshRenderer>().sharedMaterials;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.gameObject.CompareTag("Player"))
-        {
-            return;
-        }
+        if (!other.CompareTag("Player")) return;
 
-        // add to inventory here
-        // get reference to player inventory, add item to it
         InventoryComponent playerInventory = other.GetComponent<InventoryComponent>();
-
         if (playerInventory)
         {
-            playerInventory.AddItem(ItemInstance,amount);
+            playerInventory.AddItem(itemInstance, amount);
         }
 
-        if (ItemInstance.itemCategory == ItemCategory.Weapon)
+        if (itemInstance.itemCategory == ItemCategory.WEAPON)
         {
-            
+            WeaponHolder weaponHolder = other.GetComponent<WeaponHolder>();
+            WeaponComponent tempWeaponData = itemInstance.itemPrefab.GetComponent<WeaponComponent>();
+            if (weaponHolder.weaponAmmoDictionary.ContainsKey(tempWeaponData.weaponStats.weaponType))
+            {
+                WeaponStats tempWeaponStats = weaponHolder.weaponAmmoDictionary[tempWeaponData.weaponStats.weaponType];
+                tempWeaponStats.totalBullets += itemInstance.amountValue;
+                weaponHolder.weaponAmmoDictionary[tempWeaponData.weaponStats.weaponType] = tempWeaponStats;
+                if (weaponHolder.GetEquippedWeapon != null)
+                {
+                    weaponHolder.GetEquippedWeapon.weaponStats = weaponHolder.weaponAmmoDictionary[tempWeaponStats.weaponType];
+                }
+            }
+            else
+            {
+                weaponHolder.weaponAmmoDictionary.Add(tempWeaponData.weaponStats.weaponType, tempWeaponData.weaponStats);
+            }
+
         }
 
         Destroy(gameObject);

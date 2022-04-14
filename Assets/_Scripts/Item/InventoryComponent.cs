@@ -8,7 +8,7 @@ public class InventoryComponent : MonoBehaviour
     [SerializeField] private List<ItemScript> Items = new List<ItemScript>();
 
     private PlayerController Controller;
-    
+
     private void Awake()
     {
         Controller = GetComponent<PlayerController>();
@@ -29,7 +29,7 @@ public class InventoryComponent : MonoBehaviour
         if (itemIndex != -1)
         {
             ItemScript listItem = Items[itemIndex];
-            if (listItem.stackable && listItem.amountValue < listItem.maxSize)
+            if (listItem.isStackable && listItem.amountValue < listItem.maxSize)
             {
                 listItem.ChangeAmount(item.amountValue);
             }
@@ -58,7 +58,7 @@ public class InventoryComponent : MonoBehaviour
     {
         if (Items == null || Items.Count <= 0) return null;
 
-        return itemCategory == ItemCategory.None ? Items : 
+        return itemCategory == ItemCategory.NONE ? Items :
             Items.FindAll(item => item.itemCategory == itemCategory);
     }
 }

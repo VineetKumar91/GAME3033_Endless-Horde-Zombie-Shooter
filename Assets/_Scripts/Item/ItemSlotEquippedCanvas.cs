@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class ItemSlotEquippedCanvas : MonoBehaviour
 {
-    EquippableScriptable Equipable;
+    EquippableScriptable Equippable;
     [SerializeField] private Image EnabledImage;
 
     private void Awake()
@@ -19,7 +19,7 @@ public class ItemSlotEquippedCanvas : MonoBehaviour
         gameObject.SetActive(true);
     }
 
-    public void HideWidget() 
+    public void HideWidget()
     {
         gameObject.SetActive(false);
     }
@@ -29,21 +29,21 @@ public class ItemSlotEquippedCanvas : MonoBehaviour
     {
         if (!(item is EquippableScriptable eqItem)) return;
 
-        Equipable = eqItem;
+        Equippable = eqItem;
         ShowWidget();
-        Equipable.OnEquipStatusChange += OnEquipmentChange;
+        Equippable.OnEquipStatusChange += OnEquipmentChange;
         OnEquipmentChange();
 
     }
 
     private void OnEquipmentChange()
     {
-        EnabledImage.gameObject.SetActive(Equipable.Equipped);
+        EnabledImage.gameObject.SetActive(Equippable.Equipped);
     }
 
     private void OnDisable()
     {
-        if (Equipable) 
-            Equipable.OnEquipStatusChange -= OnEquipmentChange;
+        if (Equippable)
+            Equippable.OnEquipStatusChange -= OnEquipmentChange;
     }
 }

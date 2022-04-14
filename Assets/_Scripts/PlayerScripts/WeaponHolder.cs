@@ -39,25 +39,42 @@ public class WeaponHolder : MonoBehaviour
     private bool wasFiring = false;
     private bool firingPressed = false;
 
+    GameObject spawnedWeapon;
+    public Dictionary<WeaponType, WeaponStats> weaponAmmoDictionary;
+
+    public WeaponComponent GetEquippedWeapon => equippedWeapon;
+
+    [SerializeField]
+    private WeaponScriptable startWeapon;
+
+
     // Start is called before the first frame update
     void Start()
     {
-        GameObject spawnedWeapon = Instantiate(WeaponToSpawn, WeaponScoketLocation.transform.position,
-            WeaponScoketLocation.transform.rotation, WeaponScoketLocation.transform);
+       //spawnedWeapon = Instantiate(WeaponToSpawn, WeaponScoketLocation.transform.position,
+       //    WeaponScoketLocation.transform.rotation, WeaponScoketLocation.transform);
 
         animator = GetComponent<Animator>();
+        weaponAmmoDictionary = new Dictionary<WeaponType, WeaponStats>();
+        _playerController = GetComponent<PlayerController>();
 
         // 2nd Feb
-        equippedWeapon = spawnedWeapon.GetComponent<WeaponComponent>();
-        equippedWeapon.Initialize(this);
+        //equippedWeapon = spawnedWeapon.GetComponent<WeaponComponent>();
+        //equippedWeapon.Initialize(this);
 
         // Events...
-        PlayerEvents.InvokeOnWeaponEquipped(equippedWeapon);
+        //PlayerEvents.InvokeOnWeaponEquipped(equippedWeapon);
         /// Events
          
 
-        GripIKScoketLocation = equippedWeapon.gripLocation;
-        _playerController = GetComponent<PlayerController>();
+        //GripIKScoketLocation = equippedWeapon.gripLocation;
+        
+
+
+        
+        _playerController.inventory.AddItem(startWeapon, 1);
+
+        weaponAmmoDictionary.Add(startWeapon.weaponStats.weaponType, startWeapon.weaponStats);
     }
 
     // Update is called once per frame
@@ -72,8 +89,8 @@ public class WeaponHolder : MonoBehaviour
     /// <param name="layerIndex"></param>
     private void OnAnimatorIK(int layerIndex)
     {
-        animator.SetIKPositionWeight(AvatarIKGoal.LeftHand,1);
-        animator.SetIKPosition(AvatarIKGoal.LeftHand, GripIKScoketLocation.transform.position);
+        //animator.SetIKPositionWeight(AvatarIKGoal.LeftHand,1);
+        //animator.SetIKPosition(AvatarIKGoal.LeftHand, GripIKScoketLocation.transform.position);
     }
 
     public void OnFire(InputValue value)
@@ -105,6 +122,8 @@ public class WeaponHolder : MonoBehaviour
     private void StartFiring()
     {
 
+        if (!equippedWeapon) return;
+
         if (equippedWeapon.weaponStats.bulletsInClip <= 0)
         {
             StartReloading();
@@ -119,6 +138,8 @@ public class WeaponHolder : MonoBehaviour
     // Stop Firing weapon
     private void StopFiring()
     {
+        if (!equippedWeapon) return;
+
         _playerController.isFiring = false;
         animator.SetBool(isFiringHash,false);
         equippedWeapon.StopFiringWeapon();
@@ -127,6 +148,8 @@ public class WeaponHolder : MonoBehaviour
     // Reload weapon
     public void StartReloading()
     {
+        if (!equippedWeapon) return;
+
         if (equippedWeapon.isReloading ||
             equippedWeapon.weaponStats.bulletsInClip == equippedWeapon.weaponStats.clipSize)
         {
@@ -156,6 +179,8 @@ public class WeaponHolder : MonoBehaviour
     // Stop Reloading Weapon
     public void StopReloading()
     {
+        if (!equippedWeapon) return;
+
         if (animator.GetBool(isReloadingHash))
         {
             return;
@@ -170,5 +195,46 @@ public class WeaponHolder : MonoBehaviour
 
         // stop reloading invoke is stopped
         CancelInvoke(nameof(StopReloading));
+    }
+
+
+    /// <summary>
+    /// Equip weapon
+    /// </summary>
+    /// <param name="weaponScriptable"></param>
+    public void EquipWeapon(WeaponScriptable weaponScriptable)
+    {
+        if (!weaponScriptable) return;
+
+        spawnedWeapon = Instantiate(weaponScriptable.itemPrefab, WeaponScoketLocation.transform.position, WeaponScoketLocation.transform.rotation, WeaponScoketLocation.transform);
+
+        if (!spawnedWeapon) return;
+
+        equippedWeapon = spawnedWeapon.GetComponent<WeaponComponent>();
+
+        if (!equippedWeapon) return;
+
+        equippedWeapon.Initialize(this, weaponScriptable);
+        if (weaponAmmoDictionary.ContainsKey(equippedWeapon.weaponStats.weaponType))
+        {
+            equippedWeapon.weaponStats = weaponAmmoDictionary[equippedWeapon.weaponStats.weaponType];
+        }
+        PlayerEvents.InvokeOnWeaponEquipped(equippedWeapon);
+    }
+
+
+    /// <summary>
+    /// Unequip weapon
+    /// </summary>
+    public void UnquipWeapon()
+    {
+        if (!equippedWeapon) return;
+        if (weaponAmmoDictionary.ContainsKey(equippedWeapon.weaponStats.weaponType))
+        {
+            weaponAmmoDictionary[equippedWeapon.weaponStats.weaponType] = equippedWeapon.weaponStats;
+        }
+
+        Destroy(equippedWeapon.gameObject);
+        equippedWeapon = null;
     }
 }

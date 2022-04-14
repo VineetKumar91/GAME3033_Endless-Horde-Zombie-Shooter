@@ -10,9 +10,8 @@ public class PlayerHealthComponent : HealthComponent
         PlayerEvents.Invoke_OnHealthInitialized(this);
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void Destroy()
     {
-        
+        Debug.Log("Player is dead");
     }
 }

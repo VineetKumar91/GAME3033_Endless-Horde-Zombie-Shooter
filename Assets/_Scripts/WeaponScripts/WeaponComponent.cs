@@ -22,7 +22,7 @@ public enum WeaponFiringPattern
 [System.Serializable]
 public struct WeaponStats
 {
-    WeaponType weaponType;
+    public WeaponType weaponType;
     public string weaponName;
     public float damage;
     public int bulletsInClip;
@@ -80,9 +80,14 @@ public class WeaponComponent : MonoBehaviour
     /// 2nd Feb
     /// </summary>
     /// <param name="weaponHolder"></param>
-    public void Initialize(WeaponHolder weaponHolder)
+    public void Initialize(WeaponHolder weaponHolder, WeaponScriptable weaponScriptable)
     {
         this.weaponHolder = weaponHolder;
+
+        if (weaponScriptable)
+        {
+            weaponStats = weaponScriptable.weaponStats;
+        }
 
     }
 

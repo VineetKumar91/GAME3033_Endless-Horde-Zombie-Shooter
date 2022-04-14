@@ -19,7 +19,7 @@ public class ItemDisplayPanel : MonoBehaviour
     {
         WipeChildren();
 
-        foreach(ItemScript item in itemList)
+        foreach (ItemScript item in itemList)
         {
             IconSlot icon = Instantiate(ItemSlotPrefab, RectTransform).GetComponent<IconSlot>();
             icon.Initialize(item);
@@ -28,7 +28,7 @@ public class ItemDisplayPanel : MonoBehaviour
 
     private void WipeChildren()
     {
-        foreach(RectTransform child in RectTransform)
+        foreach (RectTransform child in RectTransform)
         {
             Destroy(child.gameObject);
         }
@@ -38,6 +38,6 @@ public class ItemDisplayPanel : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }
